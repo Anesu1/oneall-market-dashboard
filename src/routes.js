@@ -12,16 +12,23 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import Product from './pages/Product';
 import Account from './pages/Account';
 import NewProduct from './components/NewProduct';
+import Home from './pages/Home';
+import SignUp from './pages/SignUp';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
+      path:'/',
+      element:<Home />,
+      index:true
+    },
+    {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/dashboard/app" /> },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
@@ -33,6 +40,10 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+    },
+    {
+      path:'register',
+      element:<SignUp />,
     },
     {
       path:'product',

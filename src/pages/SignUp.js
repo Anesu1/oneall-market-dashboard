@@ -1,12 +1,11 @@
 import {NavLink, useNavigate} from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Button, Checkbox, Container, FormHelperText, Grid, Link, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import {BiArrowBack} from 'react-icons/bi';
-// import { Facebook as FacebookIcon } from '../icons/facebook';
-import {AiOutlineGoogle} from 'react-icons/ai';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styled from 'styled-components';
+import PhoneNumber from '../styled/PhoneNumber';
 
 const Wrapper = styled.section`
   background:${props => props.theme.color.green1};
@@ -36,18 +35,20 @@ const Wrapper = styled.section`
     color:#6c6c6c;
     text-decoration:none;
   }
-  .css-1atbtaw-MuiTypography-root-MuiLink-root,
-  .css-mvzs9h-MuiTypography-root-MuiLink-root{
+  .css-1atbtaw-MuiTypography-root-MuiLink-root{
     color:#6c6c6c;
+  }
+  .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate{
+    color:#ffffff;
   }
 `
 
-const Login = () => {
+const SignUp = () => {
     const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: ''
+      username: ''
     },
     validationSchema: Yup.object({
       email: Yup
@@ -55,10 +56,10 @@ const Login = () => {
         .email('Must be a valid email')
         .max(255)
         .required('Email is required'),
-      password: Yup
+      username: Yup
         .string()
         .max(255)
-        .required('Password is required')
+        .required('UserName is required')
     }),
     onSubmit: () => {
         navigate('/')
@@ -84,7 +85,7 @@ const Login = () => {
           >
             <Button
               component="a"
-              startIcon={<BiArrowBack fontSize="small" />}
+              startIcon={<ArrowBackIcon fontSize="small" />}
             >
               Home
             </Button>
@@ -95,61 +96,17 @@ const Login = () => {
                 color="textPrimary"
                 variant="h4"
               >
-                AllOne Market
+                OneAll Market
               </Typography>
-             
-            </Box>
-            <Grid
-              container
-              spacing={3}
-            >
-              {/* <Grid
-                item
-                xs={12}
-                md={6}
-              >
-                <Button
-                  color="info"
-                  fullWidth
-                  startIcon={<FacebookIcon />}
-                  onClick={() => formik.handleSubmit()}
-                  size="large"
-                  variant="contained"
-                >
-                  Login with Facebook
-                </Button>
-              </Grid> */}
-              <Grid
-                item
-                xs={12}
-                
-              >
-                <Button
-                  color="error"
-                  fullWidth
-                  onClick={() => formik.handleSubmit()}
-                  size="large"
-                  startIcon={<AiOutlineGoogle />}
-                  variant="contained"
-                >
-                  Login with Google
-                </Button>
-              </Grid>
-            </Grid>
-            <Box
-              sx={{
-                pb: 1,
-                pt: 3
-              }}
-            >
               <Typography
-                align="center"
                 color="textSecondary"
-                variant="body1"
+                gutterBottom
+                variant="body2"
               >
-                or login with email address
+                Buying and Selling Made Easy
               </Typography>
             </Box>
+            
             <TextField
               error={Boolean(formik.touched.email && formik.errors.email)}
               fullWidth
@@ -164,18 +121,56 @@ const Login = () => {
               variant="outlined"
             />
             <TextField
-              error={Boolean(formik.touched.password && formik.errors.password)}
+              error={Boolean(formik.touched.username && formik.errors.username)}
               fullWidth
-              helperText={formik.touched.password && formik.errors.password}
-              label="Password"
+              helperText={formik.touched.username && formik.errors.username}
+              label="UserName"
               margin="normal"
-              name="password"
+              name="username"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              type="password"
-              value={formik.values.password}
+              type="text"
+              value={formik.values.username}
               variant="outlined"
             />
+            <PhoneNumber />
+            
+            <Box
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                ml: -1
+              }}
+            >
+              <Checkbox
+                checked={formik.values.policy}
+                name="policy"
+                onChange={formik.handleChange}
+              />
+              <Typography
+                color="textSecondary"
+                variant="body2"
+              >
+                I have read the
+                {' '}
+                <NavLink
+                  to="/"
+                >
+                  <Link
+                    color="primary"
+                    underline="always"
+                    variant="subtitle2"
+                  >
+                    Terms and Conditions
+                  </Link>
+                </NavLink>
+              </Typography>
+            </Box>
+            {Boolean(formik.touched.policy && formik.errors.policy) && (
+              <FormHelperText error>
+                {formik.errors.policy}
+              </FormHelperText>
+            )}
             <Box sx={{ py: 2 }}>
               <Button
                 color="primary"
@@ -185,27 +180,24 @@ const Login = () => {
                 type="submit"
                 variant="contained"
               >
-                Sign In Now
+                Sign Up Now
               </Button>
             </Box>
             <Typography
               color="textSecondary"
               variant="body2"
             >
-              Don&apos;t have an account?
+              Have an account?
               {' '}
               <NavLink
-                to="/register"
+                to="/login"
+                
               >
                 <Link
-                  to="/register"
                   variant="subtitle2"
                   underline="hover"
-                  sx={{
-                    cursor: 'pointer'
-                  }}
                 >
-                  Sign Up
+                  Sign In
                 </Link>
               </NavLink>
             </Typography>
@@ -216,4 +208,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
