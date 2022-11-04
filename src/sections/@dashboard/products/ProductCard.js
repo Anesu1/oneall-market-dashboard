@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Box, Card, Link, Typography, Stack } from '@mui/material';
+import { Box, Card, Link, Typography, Stack, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
@@ -25,7 +25,7 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  const { name, cover, price, colors, category, status, priceSale } = product;
 
   return (
     <Card>
@@ -53,11 +53,21 @@ export default function ShopProductCard({ product }) {
           <Typography variant="subtitle2" noWrap>
             {name}
           </Typography>
-        </Link>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={colors} />
-          <Typography variant="subtitle1">
+        </Link>
+        
+        <Typography variant="subtitle1">
+            <Typography
+              component="span"
+              variant="body1"
+              sx={{
+                color: 'text.disabled',
+              }}
+            >
+              {category}
+            </Typography>
+          </Typography>
+        <Typography variant="subtitle1">
             <Typography
               component="span"
               variant="body1"
@@ -71,6 +81,12 @@ export default function ShopProductCard({ product }) {
             &nbsp;
             {fCurrency(price)}
           </Typography>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Button variant="outlined" style={{border:'1px solid #4b947d'}}><Link style={{color:'#4b947d', textDecoration:'none'}} to='/:slug'>Edit</Link></Button>
+          
+          <Button variant="outlined" color="error"><Link style={{color:'#ff0000', textDecoration:'none'}} to='/:slug'>Delete</Link></Button>
+
         </Stack>
       </Stack>
     </Card>
