@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import FeaturedCard from '../../styled/FeaturedCard';
 import Heading from '../../styled/Heading';
@@ -18,12 +18,33 @@ const Wrapper = styled.section`
     }
 `
 
+
+
 function LatestAdded() {
+
+    const [recentProducts, setRecentProducts] = useState([]);
+
+
+    const fetchData = () => {
+        return fetch("http://196.201.19.54:2035/product/allbydate")
+              .then((response) => response.json())
+              .then((data) => setRecentProducts(data));
+      }
   return (
     <Wrapper>
-        <Heading>Latest added on our classified</Heading>
+        <Heading>Recently Added Products</Heading>
         <div className="inner">
-            <FeaturedCard description="lorem ipsum dolor" />
+            <FeaturedCard >
+            <div>
+      {recentProducts.id > 0 && (
+        <ul>
+          {recentProducts.map(recentAdd => (
+            <li key={recentProducts.id}>{recentProducts.name}{recentProducts.description}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+            </FeaturedCard>
             <FeaturedCard description="lorem ipsum dolor"/>
             <FeaturedCard description="lorem ipsum dolor" />
             <FeaturedCard description="lorem ipsum dolor"/>

@@ -1,5 +1,4 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";import styled from 'styled-components';
 import FeaturedCard from '../../styled/FeaturedCard';
 import Heading from '../../styled/Heading';
 
@@ -19,16 +18,33 @@ const Wrapper = styled.section`
 `
 
 function FeaturedListing() {
+
+    const [user, setUser] = useState([]);
+
+    const fetchData = () => {
+        return fetch("https://jsonplaceholder.typicode.com/users")
+              .then((response) => response.json())
+              .then((data) => setUser(data));
+      }
+
   return (
     <Wrapper>
-        <Heading>Featured listings</Heading>
+        <Heading>Products Near ME</Heading>
         <div className="inner">
+            <FeaturedCard description="lorem ipsum dolor">
+            {user && user.length > 0 && user.map((userObj, index) => (
+            <li key={userObj.id}>{userObj.name}</li>
+          ))}
+            </FeaturedCard>
+
+
+
+
+            {/* <FeaturedCard description="lorem ipsum dolor"/>
             <FeaturedCard description="lorem ipsum dolor" />
             <FeaturedCard description="lorem ipsum dolor"/>
             <FeaturedCard description="lorem ipsum dolor" />
-            <FeaturedCard description="lorem ipsum dolor"/>
-            <FeaturedCard description="lorem ipsum dolor" />
-            <FeaturedCard description="lorem ipsum dolor"/>
+            <FeaturedCard description="lorem ipsum dolor"/> */}
         </div>
     </Wrapper>
   )

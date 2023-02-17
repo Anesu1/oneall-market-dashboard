@@ -86,6 +86,8 @@ const Wrapper = styled.div`
 `;
 
 function FeaturedCard({bgImage, description}) {
+
+
   return (
     <Wrapper bgImage={"./images/mota.webp"}>
       
@@ -93,9 +95,9 @@ function FeaturedCard({bgImage, description}) {
       <div className="top-img" />
       <div className="bottom">
         <div className="top-text">
-          <Link to="/">{description.length > 150
-              ? `${description.substring(0, 150)}...`
-              : description}</Link>
+          {/* <Link to="/">{recentProducts.id > 150
+              ? `${recentProducts.substring(0, 150)}...`
+              : recentProducts}</Link> */}
           <FaExpandArrowsAlt />
         </div>
         <div className="bottom-text">

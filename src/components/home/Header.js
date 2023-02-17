@@ -109,7 +109,7 @@ function Header() {
   return (
     <Wrapper>
       <Link to="/">
-        <img src="./images/logo.jpg" alt="" />
+        <img src="" alt="" />
       </Link>
       <span className="categories">
         Categories <HiOutlineChevronDown />

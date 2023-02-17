@@ -7,6 +7,7 @@ import {BiArrowBack} from 'react-icons/bi';
 // import { Facebook as FacebookIcon } from '../icons/facebook';
 import {AiOutlineGoogle} from 'react-icons/ai';
 import styled from 'styled-components';
+import axios, { Axios } from 'axios';
 
 const Wrapper = styled.section`
   background:${props => props.theme.color.green1};
@@ -46,24 +47,50 @@ const Login = () => {
     const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
-      email: '',
+      username: '',
       password: ''
     },
     validationSchema: Yup.object({
-      email: Yup
+      username: Yup
         .string()
-        .email('Must be a valid email')
         .max(255)
-        .required('Email is required'),
+        .required('Username is required'),
       password: Yup
         .string()
         .max(255)
         .required('Password is required')
     }),
-    onSubmit: () => {
-        navigate('/')
+    onSubmit: (e) => {
+      
+        console.log("zzzzzzzzzzzzzzzzzzzzz");
+        axios.post('http://10.20.103.66:2034/security/users/login', {
+          
+          username: e.username,
+          password: e.password
+  
+        })
+          .then((response) => {
+            if ( response.status === 200)
+            {
+            console.log(response.data);
+            alert('Successfully LoggedIn') 
+          } 
+            else{
+               alert(response.data) 
+              }
+          })
+          .catch((err) => {
+            console.info(e.username)
+
+            console.log(err);
+            console.log(err.response);
+            alert(err.response.data.error.message);
+          });
+      }
     }
-  });
+  );
+      //  navigate('/dashboard/app')
+    
 
   return (
     <Wrapper>
@@ -95,7 +122,7 @@ const Login = () => {
                 color="textPrimary"
                 variant="h4"
               >
-                AllOne Market
+                OneAll Market
               </Typography>
              
             </Box>
@@ -151,16 +178,16 @@ const Login = () => {
               </Typography>
             </Box>
             <TextField
-              error={Boolean(formik.touched.email && formik.errors.email)}
+              error={Boolean(formik.touched.username && formik.errors.username)}
               fullWidth
-              helperText={formik.touched.email && formik.errors.email}
-              label="Email Address"
+              helperText={formik.touched.username && formik.errors.username}
+              label="Username"
               margin="normal"
-              name="email"
+              name="username"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              type="email"
-              value={formik.values.email}
+              type="text"
+              value={formik.values.username}
               variant="outlined"
             />
             <TextField
@@ -185,7 +212,22 @@ const Login = () => {
                 type="submit"
                 variant="contained"
               >
-                Sign In Now
+                <NavLink
+                to="/dashboard"
+              >
+                 <Link
+                  to="/dashboard"
+                  variant="subtitle2"
+                  underline="hover"
+                  sx={{
+                    cursor: 'pointer'
+                  }}
+                >
+                 Sign In Now
+                  </Link>
+                </NavLink>
+                
+                
               </Button>
             </Box>
             <Typography
@@ -214,6 +256,7 @@ const Login = () => {
       </Box>
     </Wrapper>
   );
-};
+ };
+
 
 export default Login;

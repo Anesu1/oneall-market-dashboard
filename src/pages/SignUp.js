@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'; 
 import {NavLink, useNavigate} from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -5,7 +6,13 @@ import { Button, Checkbox, Container, FormHelperText, Grid, Link, TextField, Typ
 import Box from '@mui/material/Box';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styled from 'styled-components';
+import axios, { Axios } from 'axios';
 import PhoneNumber from '../styled/PhoneNumber';
+
+
+//  import axios from '.src/pages/api';
+
+ 
 
 const Wrapper = styled.section`
   background:${props => props.theme.color.green1};
@@ -44,11 +51,34 @@ const Wrapper = styled.section`
 `
 
 const SignUp = () => {
+  const [roles , getRoles] = useState([]);
+
+  const url='http://10.20.103.66:2034/';
+
+  useEffect (()=>{
+    getAllRoles();
+  },[]);
+
+  const getAllRoles = () =>{
+    console.log("yyyyyyyyyyyyyyyyyyyyyyyy");
+    axios.get(`${url}security/authority/all`).then((response) =>{
+ 
+      const allRoles = response.data;
+      getRoles(allRoles);
+      console.log("xxx  roles ");
+      console.log(response.data);
+    }).catch(error=>console.error(`Error:${error}`));
+  };
+
     const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       email: '',
-      username: ''
+      username: '',
+      firstName:'',
+      lastName: '',
+      password: ''
+      
     },
     validationSchema: Yup.object({
       email: Yup
@@ -61,9 +91,65 @@ const SignUp = () => {
         .max(255)
         .required('UserName is required')
     }),
-    onSubmit: () => {
-        navigate('/')
+    
+
+
+   
+
+  
+
+    // const: setAuthority= ()=> {
+    //   axios.get('${url}past')
+    //   .then((response) =>{
+    //   const auth=response.data.notes.auth;
+    //   setAuthority(auth);
+    //   })
+    // .catch(error=>console.error('Error:${error}'));
+    // },
+    
+    
+  
+
+
+
+
+   
+    
+    onSubmit: (e) => {
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+      axios.post('http://10.20.103.66:2034/security/users/create', {
+        email: e.email,
+        login: e.username,
+        firstName: e.firstName,
+        lastName: e.lastName,
+        password: e.password,
+        role: e.role
+
+      })
+        .then((response) => {
+          if ( response.status === 200)
+          {
+           navigate('/dashboard/app');
+          console.log(response.data);
+          alert('Successfully LoggedIn') 
+        } 
+          else{
+             alert(response.data) 
+            } 
+
+
+    
+
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+          alert(err.response.data.error.message);
+        });
+
+       
     }
+   
   });
 
   return (
@@ -121,6 +207,32 @@ const SignUp = () => {
               variant="outlined"
             />
             <TextField
+              error={Boolean(formik.touched.firstname && formik.errors.firstName)}
+              fullWidth
+              helperText={formik.touched.firstname && formik.errors.firstName}
+              label="FirstName"
+              margin="normal"
+              name="firstName"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="text"
+              value={formik.values.firstname}
+              variant="outlined"
+            />
+              <TextField
+              error={Boolean(formik.touched.lastname && formik.errors.lastName)}
+              fullWidth
+              helperText={formik.touched.lastname && formik.errors.lastName}
+              label="LastName"
+              margin="normal"
+              name="lastName"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="text"
+              value={formik.values.lastname}
+              variant="outlined"
+            />
+              <TextField
               error={Boolean(formik.touched.username && formik.errors.username)}
               fullWidth
               helperText={formik.touched.username && formik.errors.username}
@@ -133,7 +245,36 @@ const SignUp = () => {
               value={formik.values.username}
               variant="outlined"
             />
-            <PhoneNumber />
+              <TextField
+              error={Boolean(formik.touched.password && formik.errors.password)}
+              fullWidth
+              helperText={formik.touched.password && formik.errors.password}
+              label="Password"
+              margin="normal"
+              name="password"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="text"
+              value={formik.values.password}
+              variant="outlined"
+            />
+           <p>Select one option from drop-down list:</p>
+   
+ 
+   <select> 
+   {roles.map(
+        role=>{
+          return <option value={role}>{role.name}</option> 
+        }
+      )}
+       
+   </select> 
+          
+              
+          
+        
+
+              
             
             <Box
               sx={{
@@ -142,11 +283,11 @@ const SignUp = () => {
                 ml: -1
               }}
             >
-              <Checkbox
+              {/* <Checkbox
                 checked={formik.values.policy}
                 name="policy"
                 onChange={formik.handleChange}
-              />
+              /> */}
               <Typography
                 color="textSecondary"
                 variant="body2"
@@ -179,6 +320,7 @@ const SignUp = () => {
                 size="large"
                 type="submit"
                 variant="contained"
+                
               >
                 Sign Up Now
               </Button>

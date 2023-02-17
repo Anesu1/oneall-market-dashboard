@@ -7,9 +7,7 @@ const Wrapper = styled.footer`
   padding: 5%;
   text-align: center;
   background: ${(props) => props.bgColor};
-  @media(min-width:992px){
-    padding:5% 10%;
-  }
+
   p {
     font-size: 20px;
     font-family: ${(props) => props.theme.fam.regular};
@@ -19,7 +17,7 @@ const Wrapper = styled.footer`
     display:flex;
     flex-wrap:wrap;
     .footer-inner{
-      width:45%;
+      width:25%;
       text-align:left;
       h3{
         font-family:${props => props.theme.fam.medium};
@@ -66,27 +64,10 @@ function Footer() {
     <Wrapper>
       <div className="top">
         <div className="footer-inner">
-          <h3>Navigation</h3>
-          <ul>
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="#">Search </a>
-            </li>
-            <li>
-              <a href="#">Contact</a>
-            </li>
-            <li>
-              <a href="#">My Account</a>
-            </li>
-            <li>
-              <a href="#">Add a new listing</a>
-            </li>
-          </ul>
+          <h3>LOGO</h3>
         </div>
         <div className="footer-inner">
-          <h3>Categories</h3>
+          <h3>CATEGORIES</h3>
           <ul>
             <li>
               <a href="#">For sale</a>
@@ -103,45 +84,59 @@ function Footer() {
             <li>
               <a href="#">Home & Furniture</a>
             </li>
-            <li>
-              <a href="#">Electronics</a>
-            </li>
-            <li>
-              <a href="#">Services</a>
-            </li>
-            <li>
-              <a href="#">Video Games & Consoles</a>
-            </li>
-            <li>
-              <a href="#">Jobs</a>
-            </li>
-            <li>
-              <a href="#">Dating</a>
-            </li>
           </ul>
         </div>
 
+        <div className="footer-inner">
+          <h3>CATEGORIES</h3>
+          <ul>
+            <li>
+              <a href="#">For sale</a>
+            </li>
+            <li>
+              <a href="#">Automotive</a>
+            </li>
+            <li>
+              <a href="#">Real estate</a>
+            </li>
+            <li>
+              <a href="#">Fashion</a>
+            </li>
+            <li>
+              <a href="#">Home & Furniture</a>
+            </li>
+          </ul>
+        </div>
         <div className="footer-inner">
           <h3>Information</h3>
           <ul>
             <li>
               <a href="#">Privacy Policy</a>
             </li>
-           
+            <li>
+              <a href="#">Home</a>
+            </li>
+            <li>
+              <a href="#">Search </a>
+            </li>
+            <li>
+              <a href="#">Contact</a>
+            </li>
+            <li>
+              <a href="#">My Account</a>
+            </li>
           </ul>
         </div>
-
-
       </div>
       <hr />
       <div className="bottom">
-        <a href="https://zimhero.com/">Web Hosting Zimbabwe</a>
+        <a href="">One All Market</a>
         <span>|</span>
-        <a href="https://webforumlife.com/">Web Forum life</a>
+        <a href="">Leading Online Store</a>
         <span>|</span>
-        <a href="https://whatsappgrouplinks.co.zw/">whatsappgrouplinks</a>
+        <a href="">Certificate Verification</a>
         <span>|</span>
-        <a href="https://newsupdates.co.zw/">News in Zimbabwe</a>
+        <a href="">Hitrac</a>
       </div>
     </Wrapper>
   );

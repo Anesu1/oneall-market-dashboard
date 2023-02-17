@@ -25,7 +25,7 @@ const Wrapper = styled.section`
 function LatestBlog() {
   return (
     <Wrapper>
-        <Heading>Latest articles on blog</Heading>
+        <Heading>Most Viewed Products</Heading>
         <div className="inner">
             <LatestAddedCard description="Have you ever opened the door to your car and experienced a heat wave as if it were a furnace? It goes without saying that the first thing you do once inside is turn on your air conditioner to cool off. The air conditioning has several drawbacks even..."/>
             <LatestAddedCard description="Have you ever opened the door to your car and experienced a heat wave as if it were a furnace? It goes without saying that the first thing you do once inside is turn on your air conditioner to cool off. The air conditioning has several drawbacks even..."/>

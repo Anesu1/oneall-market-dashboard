@@ -2,7 +2,8 @@ import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
-//
+import { ProtectedRoute } from "./protectedRoute";
+
 import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
@@ -28,13 +29,13 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" /> },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
+        { element: <ProtectedRoute><Navigate to="/dashboard/app" /></ProtectedRoute> },
+        { path: 'app', element: <ProtectedRoute><DashboardAppPage /> </ProtectedRoute>},
+        { path: 'user', element: <ProtectedRoute><UserPage /></ProtectedRoute> },
+        { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
         { path: 'blog', element: <BlogPage /> },
-        {path: 'profile', element: <Account />},
-        {path:'new-product', element:<NewProduct />}
+        {path: 'profile', element:  <ProtectedRoute><Account /></ProtectedRoute> },
+        {path:'new-product', element:<ProtectedRoute> <NewProduct /></ProtectedRoute>}
       ],
     },
     {
@@ -45,14 +46,15 @@ export default function Router() {
       path:'register',
       element:<SignUp />,
     },
+
     {
       path:'product',
-      element:<Product />
+      element:<ProtectedRoute><Product /></ProtectedRoute>
     },
     {
       element: <SimpleLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <ProtectedRoute> <Navigate to="/dashboard/app" />  </ProtectedRoute> , index: true },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],

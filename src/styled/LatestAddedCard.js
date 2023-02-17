@@ -34,14 +34,14 @@ const Wrapper = styled.div`
 function LatestAddedCard({ description }) {
   return (
     <Link to='/'>
-      <Wrapper bgImage="./images/mota.webp">
+      <Wrapper bgImage="">
         <div className="top-img" />
         <div className="text">
           <h4>Advantages and disadvantages of using aircon in the car</h4>
           <Paragraph>
-            {description.length > 50
+            {/* {description.length > 50
               ? `${description.substring(0, 50)}...`
-              : description}
+              : description} */}
           </Paragraph>
         </div>
       </Wrapper>
