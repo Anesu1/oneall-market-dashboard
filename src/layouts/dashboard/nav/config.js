@@ -50,6 +50,11 @@ const navConfig = [
     icon: icon('ic_cart.svg'),
   },
   {
+    title: 'store',
+    path: '/dashboard/store',
+    icon: icon('ic_store.svg'),
+  },
+  {
     title: 'terms of use',
     path: '/dashboard/terms_of_use',
     icon: icon('terms-of-use.png'),

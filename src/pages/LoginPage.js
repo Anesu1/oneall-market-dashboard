@@ -8,6 +8,10 @@ import {BiArrowBack} from 'react-icons/bi';
 import {AiOutlineGoogle} from 'react-icons/ai';
 import styled from 'styled-components';
 import axios, { Axios } from 'axios';
+import { render } from 'react-dom';
+import {AuthProvider, useAuth}  from '../utils/authProvider';
+
+
 
 const Wrapper = styled.section`
   background:${props => props.theme.color.green1};
@@ -45,6 +49,8 @@ const Wrapper = styled.section`
 
 const Login = () => {
     const navigate = useNavigate()
+    const {login}=useAuth()
+  
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -61,36 +67,18 @@ const Login = () => {
         .required('Password is required')
     }),
     onSubmit: (e) => {
-      
-        console.log("zzzzzzzzzzzzzzzzzzzzz");
-        axios.post('http://10.20.103.66:2034/security/users/login', {
-          
-          username: e.username,
-          password: e.password
-  
-        })
-          .then((response) => {
-            if ( response.status === 200)
-            {
-            console.log(response.data);
-            alert('Successfully LoggedIn') 
-          } 
-            else{
-               alert(response.data) 
-              }
-          })
-          .catch((err) => {
-            console.info(e.username)
+      // import Auth provider and call login here
+      login({
+        username:e.username,
+        password:e.password
 
-            console.log(err);
-            console.log(err.response);
-            alert(err.response.data.error.message);
-          });
+      })
+     
       }
     }
   );
-      //  navigate('/dashboard/app')
-    
+      
+     // navigate('/dashboard/app')
 
   return (
     <Wrapper>

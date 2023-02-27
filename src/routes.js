@@ -15,6 +15,7 @@ import Account from './pages/Account';
 import NewProduct from './components/NewProduct';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
+import {Store} from './pages/Store';
 
 // ----------------------------------------------------------------------
 
@@ -29,13 +30,14 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <ProtectedRoute><Navigate to="/dashboard/app" /></ProtectedRoute> },
+        // { element: <ProtectedRoute><Navigate to="/dashboard/app" /></ProtectedRoute> },
         { path: 'app', element: <ProtectedRoute><DashboardAppPage /> </ProtectedRoute>},
         { path: 'user', element: <ProtectedRoute><UserPage /></ProtectedRoute> },
         { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
         { path: 'blog', element: <BlogPage /> },
         {path: 'profile', element:  <ProtectedRoute><Account /></ProtectedRoute> },
-        {path:'new-product', element:<ProtectedRoute> <NewProduct /></ProtectedRoute>}
+        {path:'new-product', element:<ProtectedRoute> <NewProduct /></ProtectedRoute>},
+         {path:'store', element:<ProtectedRoute> <Store /></ProtectedRoute>}
       ],
     },
     {

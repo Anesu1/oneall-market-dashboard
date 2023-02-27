@@ -9,6 +9,8 @@ import {
   Typography
 } from '@mui/material';
 
+
+
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   city: 'Los Angeles',
@@ -19,6 +21,7 @@ const user = {
 };
 
 export const AccountProfile = (props) => (
+ 
   <Card {...props}>
     <CardContent>
       <Box
@@ -41,7 +44,7 @@ export const AccountProfile = (props) => (
           gutterBottom
           variant="h5"
         >
-          {user.name}
+           {user.name}
         </Typography>
         <Typography
           color="textSecondary"

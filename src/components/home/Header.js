@@ -116,10 +116,10 @@ function Header() {
       </span>
       <ul>
         <li>
-          <a href="#">
+        <Link to="/login">
             <HiOutlinePlusCircle />
-            <span>Post an ad</span>
-          </a>
+            <span>Post a product</span>
+            </Link>
         </li>
         <li>
           <a href="#">

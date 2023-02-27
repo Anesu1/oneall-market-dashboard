@@ -13,6 +13,7 @@ import {
 
 
 export const AccountProfileDetails = (props) => {
+ 
   const [values, setValues] = useState({
     tradingName: 'Katarina ltd',
     phone: '263782038271',

@@ -131,7 +131,7 @@ const SignUp = () => {
           {
            navigate('/dashboard/app');
           console.log(response.data);
-          alert('Successfully LoggedIn') 
+           
         } 
           else{
              alert(response.data) 

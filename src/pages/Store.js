@@ -1,8 +1,17 @@
+import * as React from 'react';
 import {useState, useEffect} from 'react';
 import { useFormik } from 'formik';
 import {NavLink, useNavigate} from 'react-router-dom';
 import axios, { Axios } from 'axios';
 import * as Yup from 'yup';
+
+import { Space, TimePicker } from 'antd';
+import dayjs from 'dayjs';
+
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+
+
 
 
 import {
@@ -22,7 +31,7 @@ import {
   TextField
 } from '@mui/material';
 import styled from 'styled-components';
-import { useAuth } from '../../utils/authProvider';
+import { useAuth } from '../utils/authProvider';
 
 const Wrapper = styled.div`
      .MuiInputBase-root {
@@ -44,7 +53,15 @@ color: #4b947d !important;
 
 
 
-export const ProductDetails = (props) => {
+export const Store = (props) => {
+  // this.state = { phone: "" };
+   const[phone,setPhone]=useState();
+  const [value, onChange] = useState('10:00');
+  
+
+
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   const {user} = useAuth();
   console.log(user)
   const [categories , getCategories] = useState([]);
@@ -64,71 +81,88 @@ export const ProductDetails = (props) => {
       console.log(response.data);
     }).catch(error=>console.error(`Error:${error}`));
   };
+
+
+  const [currency , getCurrencies] = useState([]);
+
+  const urll='http://10.20.103.66:2034/';
+
+  useEffect (()=>{
+    getAllCurrencies();
+  },[]);
+
+  const getAllCurrencies = () =>{
+    console.log("qqqqqq");
+    axios.get(`${urll}trading-currencies/`).then((response) =>{
+ 
+      const allCurrencies = response.data;
+      getCurrencies(allCurrencies);
+      console.log(response.data);
+    }).catch(error=>console.error(`Error:${error}`));
+  };
+
+ 
+
+  const handleChange = event => {
+    if (event.target.checked) {
+      console.log('');
+    } else {
+      console.log('');
+    }
+    setIsSubscribed(current => !current);
+  };
   
-    const [id, setId] = useState([]);
 
-    useEffect(() => {
-      usingAxiosAsync();
-    }, []);            
 
-   
-    const usingAxiosAsync = async () => {
-      console.log("yyyy")
-      const response = await axios.get("http://10.20.103.66:2034/security/users/username");
-      setId(response.data.data);
-      
-    };
-
-   
 
     const navigate = useNavigate()
 
 
+
+
     const formik = useFormik({
       initialValues: {
-        name: '',
-    seller: '',
-    price: '',
-    stock: '',
-    description: '',
-    location:'',
-    latitude:'',
-    longitude:'',
-    category:'',
-    productImage:''
+        tradingName: '',
+        description: '',
+        email:'',
+        location:'',
+        phone:'',
+        openingHours:'',
+        closingHours:'',
+        delivery:'',
+        deliveryDetails:'',
+        category:''
+
       
         
       },
       validationSchema: Yup.object({
-        name: Yup
+        tradingName: Yup
           .string()
           .max(255)
           .required(''),
-        seller: Yup
+        description: Yup
           .string()
           .max(255)
           .required(''),
-          price: Yup
+          email: Yup
           .string()
-          .max(255)
-          .required(''),
-          stock: Yup
-          .string()
-          .max(255)
-          .required(''),
-          description: Yup
-          .string()
+          .email('Must be a valid email')
           .max(255)
           .required(''),
           location: Yup
           .string()
           .max(255)
           .required(''),
-          latitude: Yup
+          phone: Yup
           .string()
           .max(255)
           .required(''),
-          longitude: Yup
+          openingHours: Yup
+          .string()
+          .max(255)
+          .required(''),
+          closingHours: Yup
           .string()
           .max(255)
           .required(''),
@@ -136,10 +170,8 @@ export const ProductDetails = (props) => {
           .string()
           .max(255)
           .required(''),
-          productImage: Yup
-          .string()
-          .max(255)
-          .required(''),
+    
+        
       }),
       onSubmit: (e) => {
         console.log("wwwww");
@@ -148,13 +180,7 @@ export const ProductDetails = (props) => {
           name: e.name,
           seller:e.seller,
           price:e.price,
-          stock:e.stock,
-          description:e.description,
-          location:e.location,
-          latitude:e.latitude,
-          longitude:e.longitude,
-          category:e.category,
-          productImage:e.productImage
+         
   
         })
           .then((response) => {
@@ -177,74 +203,17 @@ export const ProductDetails = (props) => {
           });
       },
 
-      
-    
-     
     });
 
 
-          const options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0,
-          };
-          const success=(pos) =>{
-            const crd = pos.coords;
 
-            formik.setFieldValue("latitude",crd.latitude)
-            formik.setFieldValue("longitude",crd.longitude)
-            // console.log("Your current position is:");
-            // console.log(`Latitude : ${crd.latitude}`);
-            // console.log(`Longitude: ${crd.longitude}`);
-            // console.log(`More or less ${crd.accuracy} meters.`);
-            
-          }
-
-          const errors=(err) =>{
-            console.warn(`ERROR(${err.code}): ${err.message}`);
-          }
-
-
-          useEffect (()=>{
-            
-              if (navigator.geolocation) {
-                navigator.permissions
-                  .query({ name: "geolocation" })
-                  .then((result) =>{
-                    // console.log("Result: ",result)
-                    if (result.state === "granted") {
-                      // console.log("Result state : ",result.state);
-                      // If granted then you can directly call your function here
-                      navigator.geolocation.getCurrentPosition(success);
-                    } else if (result.state === "prompt") {
-                      navigator.geolocation.getCurrentPosition(success, errors, options);
-                    } else if (result.state === "denied") {
-
-                      // If denied then you have to show instructions to enable location
-                    }
-                    result.onchange = function () {
-                      // console.log(result.state);
-                    };
-                  });
-              } else {
-                alert("Sorry Not available!");
-              }
-            })
-
-            const [productImage , setImage] = useState('');
-            const handleImage=(e)=>{
-              console.log(e.target.files)
-              setImage(e.target.files[0])
-            }
-          
- 
   return (
     <Wrapper>
     <form onSubmit={formik.handleSubmit} autoComplete="off" noValidate {...props} >
       <Card>
         <CardHeader
-          subheader="Add your new product"
-          title=""
+          subheader=""
+          title="My Store"
         />
         <Divider />
         <CardContent>
@@ -259,11 +228,11 @@ export const ProductDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Name"
-                name="name"
+                label="Trading Name"
+                name="tradingName"
                 onChange={formik.handleChange}
                 required
-                value={formik.values.name}
+                value={formik.values.tradingName}
                 variant="outlined"
               />
             </Grid>
@@ -289,30 +258,15 @@ export const ProductDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Price"
-                name="price"
+                label="Email"
+                name="email"
                 onChange={formik.handleChange}
                 required
-                value={formik.values.price}
+                value={formik.values.email}
                 variant="outlined"
               />
             </Grid>
             
-            {/* <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Seller"
-                name="seller"
-                onChange={formik.handleChange}
-                required
-                value={id.id}
-                variant="outlined"
-              />
-            </Grid> */}
 
             <Grid
               item
@@ -321,23 +275,7 @@ export const ProductDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="In-Stock"
-                name="stock"
-                onChange={formik.handleChange}
-                required
-                value={formik.values.stock}
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Location"
+                label="Location of Business"
                 name="location"
                 onChange={formik.handleChange}
                 required
@@ -351,15 +289,70 @@ export const ProductDetails = (props) => {
               md={6}
               xs={12}
             >
-              <TextField
+             
+               {/* <PhoneInput
+               placeholder="Enter phone number"
+               value={svalue}
+               onChange={setValue}/> */}
+              <PhoneInput
+          country={'us'}
+          value={formik.values.phone}
+          onChange={setPhone}
+        />
+        
+            </Grid>
+
+           
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              {/* <TextField
                 fullWidth
                 label="Lat"
                 name="lat"
                 onChange={formik.handleChange}
                 required
-                value={formik.values.latitude}
+                value={formik.values.delivery}
                 variant="outlined"
-              />
+              /> */}
+               <div>
+               <div>
+                <p>Delivery  </p>
+      <label htmlFor="subscribe">
+        <input
+          type="checkbox"
+          // value={isSubscribed}
+          onChange={handleChange}
+          id="subscribe"
+          name="subscribe"
+          value={formik.values.delivery}
+        />
+          (click if you provide deliveries)       
+      </label>
+
+      <hr />
+{/* 
+      <button disabled={!isSubscribed}>Proceed</button> */}
+
+      {isSubscribed &&  <TextField
+                fullWidth
+                label=""
+                onChange={formik.handleChange}
+                required
+                type="text"
+                value={formik.values.deliveryDetails}
+                variant="outlined"
+                placeholder='delivery details'
+              />}
+    </div>
+             
+     
+            
+            </div>
+       
             </Grid>
 
             <Grid
@@ -367,7 +360,7 @@ export const ProductDetails = (props) => {
               md={6}
               xs={12}
             >
-              <TextField
+              {/* <TextField
                 fullWidth
                 label="Lng"
                 name="lng"
@@ -375,7 +368,43 @@ export const ProductDetails = (props) => {
                 required
                 value={formik.values.longitude}
                 variant="outlined"
-              />
+              /> */}
+<p>Opening Hours</p>
+<Space wrap>
+    <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} size="large"   value={formik.values.openingHours}/>
+    {/* <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} />
+    <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} size="small" /> */}
+  </Space>
+
+               
+      
+                
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              {/* <TextField
+                fullWidth
+                label="Lng"
+                name="lng"
+                onChange={formik.handleChange}
+                required
+                value={formik.values.longitude}
+                variant="outlined"
+              /> */}
+<p>Closing Hours</p>
+<Space wrap>
+    <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} size="large" value={formik.values.closingHours}/>
+    {/* <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} />
+    <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} size="small" /> */}
+  </Space>
+
+               
+      
+                
             </Grid>
 
 
@@ -387,7 +416,7 @@ export const ProductDetails = (props) => {
               
               {/* <FormControl required fullWidth variant="outlined" >
         <InputLabel id="demo-simple-select-standard-label">Choose Category</InputLabel> */}
-             <p>Select one option from drop-down list:</p>
+             <p>Select category</p>
               <select name='category' value={formik.values.category} onChange={formik.handleChange}> 
         {categories.map(
               category=>{
@@ -396,25 +425,31 @@ export const ProductDetails = (props) => {
             )}
             
         </select> 
-        {/* <Select
-          labelId="demo-simple-select-standard-label"
-          id="
-          -simple-select-standard"
-          value={category}
-          onChange={handleChangeCategory}
-          label="Choose Category"
-          required
-
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select> */}
-      {/* //</FormControl> */}
+        
             </Grid>
+
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              
+              {/* <FormControl required fullWidth variant="outlined" >
+        <InputLabel id="demo-simple-select-standard-label">Choose Category</InputLabel> */}
+             <p>Select currency</p>
+              <select name='currency' value={formik.values.currency} onChange={formik.handleChange}> 
+        {currency.map(
+              currency=>{
+                return <option value={currency}>{currency.name}</option> 
+              }
+            )}
+            
+        </select> 
+        
+            </Grid>
+
+
             <Grid
               item
               md={6}
@@ -437,11 +472,7 @@ export const ProductDetails = (props) => {
         Upload picture
       </Button>  */}
 
-      { <div>
       
-        <input onChange={formik.handleChange} type="file"  name="productImage"  value={formik.values.productImage}/>
-    
-      </div> }
 
     </CardActions> 
 
@@ -474,10 +505,8 @@ export const ProductDetails = (props) => {
                 size="large"
                 type="submit"
                 variant="contained"
-           
+                
               >
-                     
-          {console.log(formik.errors)}
             Save details
           </Button>
 

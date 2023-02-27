@@ -9,6 +9,8 @@ import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } fro
 import PRODUCTS from '../_mock/products';
 import Iconify from '../components/iconify';
 
+
+
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
